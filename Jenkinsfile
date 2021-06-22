@@ -8,12 +8,12 @@ pipeline {
                 archiveArtifacts artifacts: 'dist/trainSchedule.zip'
             }
         }
-        stage("DeployToStaging"){
+        stage('DeployToStaging') {
             when {
                 branch 'master'
             }
-            steps{
-                echo "====++++executing DeployToStaging++++===="
+            steps {
+                echo '====++++executing DeployToStaging++++===='
                 withCredentials([usernamePassword(credentialsId: '8705a6fd-5afb-429d-8a48-738730f21191', usernameVariable: 'USERNAME_zmienna', passwordVariable: 'USERPASS_zmienna')])
                     sshPublisher(
                         failOnError: true,
@@ -36,30 +36,6 @@ pipeline {
                             )
                         ]
                     )
-                when {
-                    branch 'master'
-                }
-            }
-            post{
-                withCredentials([usernamePassword(credentialsId: '8705a6fd-5afb-429d-8a48-738730f21191')])
-                always{
-                    echo "====++++always++++===="
-                }
-                success{
-                    echo "====++++DeployToStaging executed successfully++++===="
-                    when {
-                        branch 'master'
-                    }
-                }
-                failure{
-                    withCredentials([usernamePassword(credentialsId: '8705a6fd-5afb-429d-8a48-738730f21191')])
-                    echo "====++++DeployToStaging execution failed++++===="
-                    when {
-                        branch 'master'
-                    }
-                }
-        
-        withCredentials([usernamePassword(credentialsId: '')])
             }
         }
     }
